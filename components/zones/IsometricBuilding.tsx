@@ -2,12 +2,12 @@
 import { Zone } from '@/lib/types'
 
 // ── Projection constants (from Living Glass handoff) ──────────────────────────
-const W = 460, H = 320
-const cx = W / 2          // 230
-const baseY = H * 0.78    // 249.6
-const fW = 260             // floor width in screen px
-const fD = 110             // floor depth in screen px
-const floorHeight = 36     // px per floor level
+const W = 480, H = 360
+const cx = W / 2
+const baseY = H * 0.76
+const fW = 280
+const fD = 120
+const floorHeight = 38
 
 // Project a normalised floor-plan point (xf,yf ∈ [0,1]) at floor index zf to screen
 function proj(xf: number, yf: number, zf: number): [number, number] {
@@ -122,20 +122,6 @@ export default function IsometricBuilding({ zones, selectedId, onSelect }: Props
                 stroke={strokeColor}
                 strokeWidth={isSelected ? 1.5 : 0.8}
               />
-
-              {/* HOT heat-plume */}
-              {zone.thermal_status === 'HOT' && (
-                <g opacity={0.6}>
-                  <line
-                    x1={centerX} y1={centerY}
-                    x2={centerX} y2={centerY - 22}
-                    stroke={STATUS_STROKE.HOT}
-                    strokeWidth={1.5}
-                    strokeDasharray="2,2"
-                  />
-                  <circle cx={centerX} cy={centerY - 23} r={2.5} fill={STATUS_STROKE.HOT} />
-                </g>
-              )}
 
               {/* Zone name pill on hover / selected */}
               {isSelected && (

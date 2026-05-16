@@ -4,7 +4,7 @@ import { ZONES, NBS_ASSETS, PASSIVE_TECHNOLOGIES } from '@/lib/mock-data'
 import CarbonHero from '@/components/overview/CarbonHero'
 import AIQueueCard from '@/components/overview/AIQueueCard'
 import IsometricBuilding from '@/components/zones/IsometricBuilding'
-import DrillSheet from '@/components/layout/DrillSheet'
+import Modal from '@/components/layout/Modal'
 import ZoneSheetBody from '@/components/zones/ZoneSheetBody'
 import PassiveSheetBody from '@/components/passive/PassiveSheetBody'
 import NBSSheetBody from '@/components/nbs/NBSSheetBody'
@@ -187,15 +187,16 @@ export default function OverviewPage() {
         </div>
       </div>
 
-      {/* Zone DrillSheet */}
-      <DrillSheet
+      {/* Zone Modal */}
+      <Modal
         open={zoneSheetOpen}
         onClose={() => setZoneSheetOpen(false)}
         title={selectedZone.name}
         subtitle={`Floor ${selectedZone.floor} · ${selectedZone.area_sqm} m²`}
+        width={500}
       >
         <ZoneSheetBody zone={selectedZone} />
-      </DrillSheet>
+      </Modal>
     </>
   )
 }
