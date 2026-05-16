@@ -1,61 +1,28 @@
 'use client'
 import { NBS_ASSETS } from '@/lib/mock-data'
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 export default function NBSCoolingLoadChart() {
   const data = NBS_ASSETS.map(a => ({
-    name: a.name.replace(' ', '\n'),
+    name: a.name.split('—')[0].trim(),
     'Cooling Credit (kW)': a.evap_cooling_credit_kw,
     'Surface Temp (°C)': a.current_surface_temp_c,
   }))
 
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--rule)',
-        borderRadius: 6,
-        padding: '16px',
-      }}
-    >
-      <div style={{ fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
+    <div className="glass" style={{ borderRadius: 16, padding: '18px 20px' }}>
+      <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 14 }}>
         NBS Cooling Performance
       </div>
       <ResponsiveContainer width="100%" height={200}>
-        <BarChart data={data} barSize={14} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="rgba(220,238,226,0.08)" />
-          <XAxis
-            dataKey="name"
-            tick={{ fill: 'rgba(220,238,226,0.45)', fontSize: 9 }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <YAxis
-            tick={{ fill: 'rgba(220,238,226,0.45)', fontSize: 9 }}
-            axisLine={false}
-            tickLine={false}
-          />
-          <Tooltip
-            contentStyle={{
-              background: '#0e1f16',
-              border: '1px solid rgba(220,238,226,0.10)',
-              borderRadius: 4,
-              fontSize: 11,
-              color: '#dceee2',
-            }}
-          />
-          <Legend wrapperStyle={{ fontSize: 10, color: 'rgba(220,238,226,0.45)' }} />
-          <Bar dataKey="Cooling Credit (kW)" fill="#3ecfcf" radius={[2, 2, 0, 0]} />
-          <Bar dataKey="Surface Temp (°C)" fill="#f0b840" radius={[2, 2, 0, 0]} />
+        <BarChart data={data} barSize={16} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" stroke="rgba(26,43,34,0.07)" />
+          <XAxis dataKey="name" tick={{ fill: 'rgba(26,43,34,0.45)', fontSize: 9 }} axisLine={false} tickLine={false} />
+          <YAxis tick={{ fill: 'rgba(26,43,34,0.45)', fontSize: 9 }} axisLine={false} tickLine={false} />
+          <Tooltip contentStyle={{ background: 'rgba(255,255,255,0.92)', border: '1px solid rgba(255,255,255,0.90)', borderRadius: 10, fontSize: 12, color: 'var(--text)', boxShadow: '0 4px 16px rgba(50,90,70,0.12)' }} />
+          <Legend wrapperStyle={{ fontSize: 11, color: 'rgba(26,43,34,0.55)' }} />
+          <Bar dataKey="Cooling Credit (kW)" fill="var(--teal)" opacity={0.80} radius={[4, 4, 0, 0]} />
+          <Bar dataKey="Surface Temp (°C)" fill="var(--warn)" opacity={0.70} radius={[4, 4, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

@@ -15,8 +15,12 @@ export default function GlobalFooter() {
 
   return (
     <footer
-      style={{ height: 36, borderTop: '1px solid var(--rule)', background: 'var(--bg)', fontSize: 11 }}
-      className="flex items-center justify-between px-6 flex-shrink-0"
+      className="glass-strong flex items-center justify-between px-6 flex-shrink-0"
+      style={{
+        height: 36,
+        borderTop: '1px solid rgba(255,255,255,0.80)',
+        fontSize: 10,
+      }}
     >
       {/* Status indicators */}
       <div className="flex items-center gap-5">
@@ -31,9 +35,9 @@ export default function GlobalFooter() {
         ))}
       </div>
 
-      {/* Carbon target */}
-      <span style={{ fontFamily: 'Azeret Mono, Courier New, monospace', color: 'var(--teal)' }}>
-        Carbon avoided today: {log.carbon_avoided_kgco2e.toFixed(1)} kg CO₂e
+      {/* Carbon summary */}
+      <span style={{ fontFamily: 'Azeret Mono, monospace', color: 'var(--teal)', fontSize: 10 }}>
+        Carbon avoided: {log.carbon_avoided_kgco2e.toFixed(1)} kg CO₂e
         &nbsp;·&nbsp;
         Passive credit: {log.passive_credit_kwh.toFixed(1)} kWh
         &nbsp;·&nbsp;
@@ -46,13 +50,13 @@ export default function GlobalFooter() {
         <button
           onClick={() => setSimRunning(r => !r)}
           style={{
-            fontFamily: 'Azeret Mono, Courier New, monospace',
-            fontSize: 10,
+            fontFamily: 'Azeret Mono, monospace',
+            fontSize: 9,
             padding: '2px 10px',
-            borderRadius: 2,
-            border: `1px solid ${simRunning ? 'var(--accent)' : 'var(--rule)'}`,
+            borderRadius: 20,
+            border: `1px solid ${simRunning ? 'var(--accent)' : 'rgba(26,43,34,0.18)'}`,
             color: simRunning ? 'var(--accent)' : 'var(--muted)',
-            background: simRunning ? 'rgba(46,255,150,0.08)' : 'transparent',
+            background: simRunning ? 'rgba(46,125,90,0.10)' : 'transparent',
             cursor: 'pointer',
             transition: 'all 0.15s',
           }}

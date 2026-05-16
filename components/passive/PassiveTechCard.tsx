@@ -2,18 +2,12 @@
 import { useState } from 'react'
 import { PassiveTechnology } from '@/lib/types'
 
-interface Props {
-  tech: PassiveTechnology
-}
+interface Props { tech: PassiveTechnology }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  VENTILATION: 'Ventilation',
-  SHADING: 'Solar Shading',
-  THERMAL_MASS: 'Thermal Mass',
-  STACK: 'Stack Effect',
-  EVAPORATIVE: 'Evaporative',
-  GLAZING: 'Glazing',
-  OTHER: 'Other',
+  VENTILATION: 'Ventilation', SHADING: 'Solar Shading',
+  THERMAL_MASS: 'Thermal Mass', STACK: 'Stack Effect',
+  EVAPORATIVE: 'Evaporative', GLAZING: 'Glazing', OTHER: 'Other',
 }
 
 export default function PassiveTechCard({ tech }: Props) {
@@ -25,13 +19,7 @@ export default function PassiveTechCard({ tech }: Props) {
     await fetch('/api/bms/write', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        bms_command: tech.category,
-        target_id: tech.id,
-        value: active ? 0 : 1,
-        expected_outcome: `${active ? 'Deactivate' : 'Activate'} ${tech.name}`,
-        carbon_avoided_kgco2e: 0,
-      }),
+      body: JSON.stringify({ bms_command: tech.category, target_id: tech.id, value: active ? 0 : 1, expected_outcome: `${active ? 'Deactivate' : 'Activate'} ${tech.name}`, carbon_avoided_kgco2e: 0 }),
     })
     setActive(a => !a)
     setActivating(false)
@@ -39,57 +27,45 @@ export default function PassiveTechCard({ tech }: Props) {
 
   return (
     <div
+      className="glass"
       style={{
-        background: 'var(--surface)',
-        border: `1px solid ${active ? 'rgba(46,255,150,0.20)' : 'var(--rule)'}`,
-        borderRadius: 6,
-        padding: '16px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 10,
-        transition: 'border-color 0.2s',
+        borderRadius: 14, padding: '16px 18px',
+        display: 'flex', flexDirection: 'column', gap: 10,
+        border: active ? '1.5px solid rgba(46,125,90,0.30)' : '1px solid rgba(255,255,255,0.85)',
+        transition: 'all 0.2s',
       }}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between">
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 13, color: 'var(--text)', fontWeight: 500, marginBottom: 2 }}>
-            {tech.name}
-          </div>
+          <div style={{ fontSize: 13, color: 'var(--text)', fontWeight: 500, marginBottom: 2 }}>{tech.name}</div>
           <div style={{ fontSize: 10, color: 'var(--muted)' }}>
             {CATEGORY_LABELS[tech.category] ?? tech.category}
-            {tech.auto_dispatch && ' · Auto-dispatch enabled'}
+            {tech.auto_dispatch && ' · Auto-dispatch'}
           </div>
         </div>
-        <div className="flex items-center gap-2" style={{ flexShrink: 0, marginLeft: 12 }}>
-          <div
-            style={{
-              fontFamily: 'Azeret Mono, monospace',
-              fontSize: 9,
-              padding: '2px 8px',
-              borderRadius: 3,
-              border: `1px solid ${active ? 'var(--accent)' : 'var(--rule)'}`,
-              color: active ? 'var(--accent)' : 'var(--muted)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
-            }}
-          >
-            {active ? '● Active' : '○ Idle'}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0, marginLeft: 12 }}>
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 5,
+            padding: '3px 10px', borderRadius: 10,
+            border: `1px solid ${active ? 'var(--ok)' : 'rgba(26,43,34,0.15)'}`,
+            background: active ? 'rgba(46,125,90,0.10)' : 'transparent',
+            fontSize: 9, fontFamily: 'Azeret Mono, monospace',
+            color: active ? 'var(--ok)' : 'var(--muted)',
+            textTransform: 'uppercase', letterSpacing: '0.06em',
+          }}>
+            <span style={{ width: 5, height: 5, borderRadius: '50%', background: active ? 'var(--ok)' : 'var(--muted)', display: 'inline-block' }} />
+            {active ? 'Active' : 'Idle'}
           </div>
           <button
             onClick={toggle}
             disabled={activating}
             style={{
-              fontFamily: 'Azeret Mono, monospace',
-              fontSize: 9,
-              padding: '2px 8px',
-              borderRadius: 3,
-              border: '1px solid var(--rule)',
-              color: 'var(--muted)',
-              background: 'transparent',
+              padding: '3px 10px', borderRadius: 10,
+              border: '1px solid rgba(26,43,34,0.15)',
+              background: 'rgba(255,255,255,0.65)',
+              fontSize: 9, color: 'var(--text)',
               cursor: activating ? 'wait' : 'pointer',
-              textTransform: 'uppercase',
-              letterSpacing: '0.08em',
+              textTransform: 'uppercase', letterSpacing: '0.06em',
             }}
           >
             {activating ? '…' : active ? 'Pause' : 'Activate'}
@@ -97,23 +73,15 @@ export default function PassiveTechCard({ tech }: Props) {
         </div>
       </div>
 
-      {/* Zones */}
       <div style={{ fontSize: 10, color: 'var(--muted)' }}>
-        Zones: <span style={{ color: 'var(--text)' }}>{tech.zone_ids.length} zone{tech.zone_ids.length !== 1 ? 's' : ''} covered</span>
+        Zones covered: <span style={{ color: 'var(--text)' }}>{tech.zone_ids.length}</span>
       </div>
 
-      {/* Constraints */}
-      <div
-        style={{
-          background: 'rgba(255,255,255,0.02)',
-          borderRadius: 4,
-          padding: '8px 10px',
-          border: '1px solid var(--rule)',
-          fontSize: 10,
-          color: 'var(--muted)',
-          lineHeight: 1.5,
-        }}
-      >
+      <div style={{
+        background: 'rgba(255,255,255,0.55)', borderRadius: 10, padding: '9px 12px',
+        border: '1px solid rgba(255,255,255,0.85)',
+        fontSize: 10, color: 'var(--muted)', lineHeight: 1.5,
+      }}>
         {tech.operational_constraints}
       </div>
     </div>

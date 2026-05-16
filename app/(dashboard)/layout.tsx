@@ -6,14 +6,16 @@ import KPIStrip from '@/components/KPIStrip'
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: 'var(--bg)', color: 'var(--text)' }}>
+    <div className="flex flex-col h-screen overflow-hidden">
       <GlobalHeader />
       <div className="flex flex-1 overflow-hidden">
         <AIDirectorSidebar />
         <div className="flex flex-col flex-1 overflow-hidden">
           <KPIStrip />
           <TabNav />
-          <main className="flex-1 overflow-y-auto p-6">{children}</main>
+          <main className="flex-1 overflow-y-auto" style={{ padding: '20px 24px 32px' }}>
+            {children}
+          </main>
         </div>
       </div>
       <GlobalFooter />

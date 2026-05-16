@@ -1,105 +1,65 @@
 import { NBS_ACTIONS } from '@/lib/mock-data'
 
 function statusColor(s: string) {
-  if (s === 'EXECUTED') return 'var(--accent)'
-  if (s === 'SCHEDULED') return 'var(--amber)'
-  if (s === 'PENDING') return 'var(--teal)'
-  return 'var(--muted)'
+  return s === 'EXECUTED' ? 'var(--ok)' : s === 'SCHEDULED' ? 'var(--warn)' : 'var(--teal)'
 }
 
 export default function NBSActionsLog() {
   return (
-    <div
-      style={{
-        background: 'var(--surface)',
-        border: '1px solid var(--rule)',
-        borderRadius: 6,
-        padding: '16px',
-      }}
-    >
-      <div style={{ fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 12 }}>
+    <div className="glass" style={{ borderRadius: 16, padding: '18px' }}>
+      <div style={{ fontSize: 9, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--muted)', marginBottom: 14 }}>
         AI Recommended Actions
       </div>
-
-      <div className="flex flex-col gap-3">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {NBS_ACTIONS.map(action => (
-          <div
-            key={action.id}
-            style={{
-              padding: '12px 14px',
-              borderRadius: 4,
-              border: `1px solid ${action.status === 'PENDING' ? 'rgba(62,207,207,0.20)' : 'var(--rule)'}`,
-              background: 'rgba(255,255,255,0.02)',
-            }}
-          >
-            <div className="flex items-center justify-between" style={{ marginBottom: 6 }}>
-              <div style={{ fontSize: 11, color: 'var(--text)', fontWeight: 500 }}>{action.asset_name}</div>
-              <div className="flex items-center gap-2">
-                <div
-                  style={{
-                    fontFamily: 'Azeret Mono, monospace',
-                    fontSize: 9,
-                    padding: '2px 6px',
-                    borderRadius: 3,
-                    border: `1px solid ${statusColor(action.status)}`,
-                    color: statusColor(action.status),
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  {action.status}
-                </div>
-                <div
-                  style={{
-                    fontFamily: 'Azeret Mono, monospace',
-                    fontSize: 9,
-                    padding: '2px 6px',
-                    borderRadius: 3,
-                    border: '1px solid var(--rule)',
-                    color: action.confidence === 'HIGH' ? 'var(--accent)' : 'var(--amber)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                  }}
-                >
-                  {action.confidence}
-                </div>
+          <div key={action.id} style={{
+            padding: '13px 14px', borderRadius: 12,
+            border: `1px solid ${action.status === 'PENDING' ? 'rgba(74,154,160,0.22)' : 'rgba(255,255,255,0.85)'}`,
+            background: 'rgba(255,255,255,0.58)',
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+              <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--text)' }}>{action.asset_name}</div>
+              <div style={{ display: 'flex', gap: 6 }}>
+                <span style={{
+                  fontFamily: 'Azeret Mono, monospace', fontSize: 8,
+                  padding: '2px 7px', borderRadius: 8,
+                  border: `1px solid ${statusColor(action.status)}`,
+                  color: statusColor(action.status),
+                  textTransform: 'uppercase', letterSpacing: '0.06em',
+                }}>{action.status}</span>
+                <span style={{
+                  fontFamily: 'Azeret Mono, monospace', fontSize: 8,
+                  padding: '2px 7px', borderRadius: 8,
+                  border: '1px solid rgba(26,43,34,0.15)',
+                  color: action.confidence === 'HIGH' ? 'var(--ok)' : 'var(--warn)',
+                  textTransform: 'uppercase', letterSpacing: '0.06em',
+                }}>{action.confidence}</span>
               </div>
             </div>
 
-            <div style={{ fontSize: 10, color: 'var(--muted)', lineHeight: 1.4, marginBottom: 6 }}>
+            <div style={{ fontSize: 10, color: 'var(--muted)', lineHeight: 1.45, marginBottom: 5 }}>
               {action.action_description}
             </div>
-
-            <div style={{ fontSize: 10, color: 'var(--teal)', lineHeight: 1.4, marginBottom: 8 }}>
+            <div style={{ fontSize: 10, color: 'var(--teal)', lineHeight: 1.45, marginBottom: 10 }}>
               → {action.expected_outcome}
             </div>
 
-            <div className="flex items-center justify-between">
-              <div style={{ fontSize: 10, color: 'var(--muted)' }}>
-                Carbon impact: <span style={{ color: 'var(--teal)', fontFamily: 'Azeret Mono, monospace' }}>
-                  {action.carbon_impact_kgco2e} kgCO₂e
-                </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ fontSize: 9, color: 'var(--muted)' }}>
+                Carbon impact: <span style={{ fontFamily: 'Azeret Mono, monospace', color: 'var(--teal)' }}>{action.carbon_impact_kgco2e} kgCO₂e</span>
                 {action.irrigation_volume_kl > 0 && (
-                  <span style={{ marginLeft: 12 }}>
-                    Water: <span style={{ color: 'var(--teal)', fontFamily: 'Azeret Mono, monospace' }}>
-                      {action.irrigation_volume_kl} kL
-                    </span>
+                  <span style={{ marginLeft: 10 }}>
+                    Water: <span style={{ fontFamily: 'Azeret Mono, monospace', color: 'var(--teal)' }}>{action.irrigation_volume_kl} kL</span>
                   </span>
                 )}
               </div>
               {!action.approved && (
-                <button
-                  style={{
-                    fontFamily: 'Azeret Mono, monospace',
-                    fontSize: 9,
-                    padding: '3px 10px',
-                    borderRadius: 3,
-                    border: '1px solid var(--accent)',
-                    color: 'var(--accent)',
-                    background: 'rgba(46,255,150,0.06)',
-                    cursor: 'pointer',
-                  }}
-                >
+                <button style={{
+                  fontSize: 9, padding: '3px 12px', borderRadius: 8, border: 'none',
+                  background: 'linear-gradient(135deg, #2E7D5A, #1A5C3A)',
+                  color: 'white', cursor: 'pointer',
+                  boxShadow: '0 1px 6px rgba(46,125,90,0.22)',
+                }}>
                   Approve
                 </button>
               )}

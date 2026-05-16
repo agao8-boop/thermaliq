@@ -9,29 +9,29 @@ export function cn(...inputs: ClassValue[]) {
 
 export function statusColor(status: ThermalStatus): string {
   const map: Record<ThermalStatus, string> = {
-    OK:   '#2eff96',
-    WARN: '#f0b840',
-    HOT:  '#ff5c5c',
-    COLD: '#3ecfcf',
+    OK:   'var(--ok)',
+    WARN: 'var(--warn)',
+    HOT:  'var(--hot)',
+    COLD: 'var(--cold)',
   }
   return map[status]
 }
 
 export function statusBg(status: ThermalStatus): string {
   const map: Record<ThermalStatus, string> = {
-    OK:   'rgba(46,255,150,0.10)',
-    WARN: 'rgba(240,184,64,0.10)',
-    HOT:  'rgba(255,92,92,0.10)',
-    COLD: 'rgba(62,207,207,0.10)',
+    OK:   'rgba(46,125,90,0.10)',
+    WARN: 'rgba(184,124,74,0.10)',
+    HOT:  'rgba(196,90,74,0.10)',
+    COLD: 'rgba(74,154,160,0.10)',
   }
   return map[status]
 }
 
 export function confidenceBadge(c: Confidence): string {
   const map: Record<Confidence, string> = {
-    HIGH:   'text-[#2eff96]',
-    MEDIUM: 'text-[#f0b840]',
-    LOW:    'text-red-400',
+    HIGH:   'var(--ok)',
+    MEDIUM: 'var(--warn)',
+    LOW:    'var(--hot)',
   }
   return map[c]
 }

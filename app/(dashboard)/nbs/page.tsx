@@ -9,41 +9,28 @@ export default function NBSPage() {
   const criticalAssets = NBS_ASSETS.filter(a => a.current_soil_moisture_pct < 35)
 
   return (
-    <div className="flex flex-col gap-6">
-      {/* Summary */}
-      <div className="grid grid-cols-3 gap-4">
+    <div className="flex flex-col gap-5">
+      <div className="grid grid-cols-3 gap-3">
         {[
-          { label: 'Active NBS Assets', value: `${activeAssets.length} / ${NBS_ASSETS.length}`, color: 'var(--accent)' },
+          { label: 'Active NBS Assets', value: `${activeAssets.length} / ${NBS_ASSETS.length}`, color: 'var(--ok)' },
           { label: 'Total Cooling Credit', value: `${totalCooling.toFixed(1)} kW`, color: 'var(--teal)' },
-          { label: 'Attention Required', value: criticalAssets.length > 0 ? `${criticalAssets.length} asset${criticalAssets.length > 1 ? 's' : ''}` : 'None', color: criticalAssets.length > 0 ? '#ff5c5c' : 'var(--accent)' },
+          { label: 'Attention Required', value: criticalAssets.length > 0 ? `${criticalAssets.length} asset${criticalAssets.length > 1 ? 's' : ''}` : 'None', color: criticalAssets.length > 0 ? 'var(--hot)' : 'var(--ok)' },
         ].map(item => (
-          <div
-            key={item.label}
-            style={{
-              background: 'var(--surface)',
-              border: '1px solid var(--rule)',
-              borderRadius: 6,
-              padding: '16px 20px',
-            }}
-          >
-            <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--muted)', marginBottom: 6 }}>
+          <div key={item.label} className="glass" style={{ borderRadius: 14, padding: '14px 18px' }}>
+            <div style={{ fontSize: 8, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--muted)', marginBottom: 6 }}>
               {item.label}
             </div>
-            <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 24, color: item.color, lineHeight: 1 }}>
+            <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 22, color: item.color, lineHeight: 1 }}>
               {item.value}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Assets grid */}
       <div className="grid grid-cols-2 gap-4">
-        {NBS_ASSETS.map(asset => (
-          <NBSAssetCard key={asset.id} asset={asset} />
-        ))}
+        {NBS_ASSETS.map(asset => <NBSAssetCard key={asset.id} asset={asset} />)}
       </div>
 
-      {/* Chart + actions */}
       <div className="grid grid-cols-2 gap-4">
         <NBSCoolingLoadChart />
         <NBSActionsLog />

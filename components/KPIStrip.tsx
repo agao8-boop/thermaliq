@@ -31,27 +31,31 @@ export default function KPIStrip() {
 
   return (
     <div
-      className="grid grid-cols-4 flex-shrink-0"
-      style={{ borderBottom: '1px solid var(--rule)' }}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, 1fr)',
+        flexShrink: 0,
+        borderBottom: '1px solid rgba(255,255,255,0.70)',
+        background: 'rgba(255,255,255,0.45)',
+        backdropFilter: 'blur(12px)',
+      }}
     >
       {cells.map((c, i) => (
         <div
           key={i}
-          className="px-6 py-3"
-          style={{ borderRight: i < 3 ? '1px solid var(--rule)' : undefined }}
+          style={{
+            padding: '12px 20px',
+            borderRight: i < 3 ? '1px solid rgba(255,255,255,0.70)' : undefined,
+          }}
         >
-          <div style={{ fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--muted)', marginBottom: 4 }}>
+          <div style={{ fontSize: 8, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--muted)', marginBottom: 4 }}>
             {c.label}
           </div>
-          <div
-            style={{
-              fontFamily: 'Azeret Mono, Courier New, monospace',
-              fontSize: 20,
-              lineHeight: 1,
-              marginBottom: 3,
-              color: c.good ? 'var(--accent)' : 'var(--amber)',
-            }}
-          >
+          <div style={{
+            fontFamily: 'Azeret Mono, Courier New, monospace',
+            fontSize: 20, lineHeight: 1, marginBottom: 3,
+            color: c.good ? 'var(--accent)' : 'var(--amber)',
+          }}>
             {c.value}
           </div>
           <div style={{ fontSize: 10, color: 'var(--muted)' }}>{c.sub}</div>

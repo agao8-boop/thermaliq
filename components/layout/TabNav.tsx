@@ -12,8 +12,12 @@ export default function TabNav() {
   const path = usePathname()
   return (
     <nav
-      style={{ borderBottom: '1px solid var(--rule)', background: 'var(--bg)' }}
       className="flex px-6 flex-shrink-0"
+      style={{
+        borderBottom: '1px solid rgba(26,43,34,0.10)',
+        background: 'rgba(255,255,255,0.40)',
+        backdropFilter: 'blur(8px)',
+      }}
     >
       {TABS.map(t => {
         const active = path.startsWith(t.href)
@@ -22,9 +26,10 @@ export default function TabNav() {
             key={t.href}
             href={t.href}
             style={{
-              padding: '12px 20px',
+              padding: '11px 20px',
               fontSize: 12,
-              letterSpacing: '0.04em',
+              letterSpacing: '0.03em',
+              fontWeight: active ? 500 : 400,
               borderBottom: `2px solid ${active ? 'var(--accent)' : 'transparent'}`,
               color: active ? 'var(--accent)' : 'var(--muted)',
               textDecoration: 'none',

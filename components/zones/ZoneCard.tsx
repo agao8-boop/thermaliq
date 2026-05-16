@@ -15,17 +15,19 @@ export default function ZoneCard({ zone, selected, onClick }: Props) {
   return (
     <div
       onClick={onClick}
+      className="glass"
       style={{
-        border: `1px solid ${selected ? color : 'var(--rule)'}`,
-        borderRadius: 6,
-        padding: '14px 16px',
-        background: selected ? bg : 'var(--surface)',
+        borderRadius: 16,
+        padding: '16px 18px',
         cursor: 'pointer',
-        transition: 'all 0.15s',
+        transition: 'all 0.18s',
+        border: selected ? `1.5px solid ${color}` : '1px solid rgba(255,255,255,0.85)',
+        background: selected ? `${bg}` : 'rgba(255,255,255,0.58)',
+        boxShadow: selected ? `0 4px 20px ${color}28` : '0 2px 14px rgba(50,90,70,0.07)',
       }}
     >
-      {/* Zone name + floor */}
-      <div className="flex items-start justify-between" style={{ marginBottom: 8 }}>
+      {/* Zone name + status */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 10 }}>
         <div>
           <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--text)', lineHeight: 1.3 }}>
             {zone.name}
@@ -34,70 +36,51 @@ export default function ZoneCard({ zone, selected, onClick }: Props) {
             Floor {zone.floor} · {zone.area_sqm} m²
           </div>
         </div>
-        <div
-          style={{
-            fontSize: 9,
-            padding: '2px 7px',
-            borderRadius: 3,
-            border: `1px solid ${color}`,
-            color,
-            letterSpacing: '0.08em',
-            fontFamily: 'Azeret Mono, monospace',
-          }}
-        >
+        <div style={{
+          fontSize: 9, padding: '2px 8px', borderRadius: 10,
+          border: `1px solid ${color}`,
+          color, letterSpacing: '0.06em',
+          fontFamily: 'Azeret Mono, monospace',
+          background: `${color}14`,
+        }}>
           {zone.thermal_status}
         </div>
       </div>
 
-      {/* Temp + Comfort */}
-      <div className="flex items-end justify-between">
+      {/* Temp + comfort */}
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
         <div>
-          <div
-            style={{
-              fontFamily: 'Azeret Mono, Courier New, monospace',
-              fontSize: 22,
-              lineHeight: 1,
-              color,
-              marginBottom: 2,
-            }}
-          >
+          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 24, lineHeight: 1, color, marginBottom: 2 }}>
             {formatTemp(zone.current_temp_f)}
           </div>
-          <div style={{ fontSize: 10, color: 'var(--muted)' }}>
-            SP {formatTemp(zone.setpoint_f)}
-          </div>
+          <div style={{ fontSize: 10, color: 'var(--muted)' }}>SP {formatTemp(zone.setpoint_f)}</div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div style={{ fontSize: 10, color: 'var(--muted)', marginBottom: 2 }}>Comfort</div>
-          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 16, color: zone.comfort_index_pct >= 80 ? 'var(--accent)' : zone.comfort_index_pct >= 60 ? 'var(--amber)' : '#ff5c5c' }}>
+          <div style={{ fontSize: 9, color: 'var(--muted)', marginBottom: 2 }}>Comfort</div>
+          <div style={{
+            fontFamily: 'Azeret Mono, monospace', fontSize: 18,
+            color: zone.comfort_index_pct >= 80 ? 'var(--ok)' : zone.comfort_index_pct >= 60 ? 'var(--warn)' : 'var(--hot)',
+          }}>
             {zone.comfort_index_pct}%
           </div>
         </div>
       </div>
 
-      {/* Metrics row */}
-      <div className="flex gap-3" style={{ marginTop: 10, paddingTop: 10, borderTop: '1px solid var(--rule)' }}>
-        <div>
-          <div style={{ fontSize: 9, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>RH</div>
-          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 11, color: 'var(--text)' }}>
-            {zone.current_humidity_pct}%
+      {/* Metrics */}
+      <div style={{ display: 'flex', gap: 14, marginTop: 12, paddingTop: 10, borderTop: '1px solid rgba(26,43,34,0.08)' }}>
+        {[
+          { label: 'RH', value: `${zone.current_humidity_pct}%`, warn: false },
+          { label: 'CO₂', value: String(zone.current_co2_ppm), warn: zone.current_co2_ppm > 900 },
+          { label: 'Occ', value: String(zone.current_occupancy_count), warn: false },
+        ].map(m => (
+          <div key={m.label}>
+            <div style={{ fontSize: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{m.label}</div>
+            <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 11, color: m.warn ? 'var(--warn)' : 'var(--text)' }}>{m.value}</div>
           </div>
-        </div>
-        <div>
-          <div style={{ fontSize: 9, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>CO₂</div>
-          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 11, color: zone.current_co2_ppm > 900 ? 'var(--amber)' : 'var(--text)' }}>
-            {zone.current_co2_ppm}
-          </div>
-        </div>
-        <div>
-          <div style={{ fontSize: 9, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Occ</div>
-          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 11, color: 'var(--text)' }}>
-            {zone.current_occupancy_count}
-          </div>
-        </div>
+        ))}
         <div style={{ marginLeft: 'auto' }}>
-          <div style={{ fontSize: 9, color: 'var(--muted)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>AI</div>
-          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 11, color: zone.ai_optimization_active ? 'var(--accent)' : 'var(--muted)' }}>
+          <div style={{ fontSize: 8, color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>AI</div>
+          <div style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 11, color: zone.ai_optimization_active ? 'var(--ok)' : 'var(--muted)' }}>
             {zone.ai_optimization_active ? 'ON' : 'OFF'}
           </div>
         </div>
