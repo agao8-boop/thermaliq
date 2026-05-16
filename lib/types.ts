@@ -20,6 +20,29 @@ export interface Zone {
   thermal_status: ThermalStatus
   comfort_index_pct: number
   updated_at: string
+  /** Normalised floor-plan coords [0–1] for IsometricBuilding overlay */
+  fp_x?: number
+  fp_y?: number
+  fp_w?: number
+  fp_h?: number
+}
+
+export interface AIQueueItem {
+  id: string
+  priority: 'now' | 'tonight' | 'tomorrow'
+  title: string
+  rationale: string
+  impact_kwh: number
+  impact_kg: number
+  eta: string
+  confidence: Confidence
+}
+
+export interface LoadStackItem {
+  day: string
+  passive: number
+  nbs: number
+  active: number
 }
 
 export interface Building {

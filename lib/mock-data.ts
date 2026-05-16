@@ -1,7 +1,8 @@
 // lib/mock-data.ts
 import type {
   Zone, Building, PassiveTechnology, PreconditioningPlan,
-  NBSAsset, NBSAction, CarbonLog, ComfortHistoryPoint, KPIData
+  NBSAsset, NBSAction, CarbonLog, ComfortHistoryPoint, KPIData,
+  AIQueueItem, LoadStackItem,
 } from './types'
 
 export const BUILDING: Building = {
@@ -23,6 +24,7 @@ export const ZONES: Zone[] = [
     current_co2_ppm: 820, current_occupancy_count: 18, setpoint_f: 72,
     ai_optimization_active: true, thermal_status: 'WARN',
     comfort_index_pct: 71, updated_at: new Date().toISOString(),
+    fp_x: 0.10, fp_y: 0.30, fp_w: 0.32, fp_h: 0.30,
   },
   {
     id: 'z-002', building_id: 'bld-001', name: 'South Conference', floor: 3,
@@ -30,6 +32,7 @@ export const ZONES: Zone[] = [
     current_co2_ppm: 1140, current_occupancy_count: 12, setpoint_f: 71,
     ai_optimization_active: true, thermal_status: 'OK',
     comfort_index_pct: 88, updated_at: new Date().toISOString(),
+    fp_x: 0.46, fp_y: 0.62, fp_w: 0.22, fp_h: 0.24,
   },
   {
     id: 'z-003', building_id: 'bld-001', name: 'East Open Plan', floor: 4,
@@ -37,6 +40,7 @@ export const ZONES: Zone[] = [
     current_co2_ppm: 740, current_occupancy_count: 31, setpoint_f: 72,
     ai_optimization_active: true, thermal_status: 'HOT',
     comfort_index_pct: 54, updated_at: new Date().toISOString(),
+    fp_x: 0.46, fp_y: 0.30, fp_w: 0.40, fp_h: 0.30,
   },
   {
     id: 'z-004', building_id: 'bld-001', name: 'West Executive', floor: 4,
@@ -44,6 +48,7 @@ export const ZONES: Zone[] = [
     current_co2_ppm: 610, current_occupancy_count: 5, setpoint_f: 71,
     ai_optimization_active: false, thermal_status: 'COLD',
     comfort_index_pct: 67, updated_at: new Date().toISOString(),
+    fp_x: 0.10, fp_y: 0.62, fp_w: 0.32, fp_h: 0.24,
   },
   {
     id: 'z-005', building_id: 'bld-001', name: 'Atrium Level 2', floor: 2,
@@ -51,6 +56,7 @@ export const ZONES: Zone[] = [
     current_co2_ppm: 680, current_occupancy_count: 24, setpoint_f: 73,
     ai_optimization_active: true, thermal_status: 'OK',
     comfort_index_pct: 92, updated_at: new Date().toISOString(),
+    fp_x: 0.30, fp_y: 0.06, fp_w: 0.40, fp_h: 0.20,
   },
   {
     id: 'z-006', building_id: 'bld-001', name: 'Roof Terrace', floor: 6,
@@ -58,6 +64,7 @@ export const ZONES: Zone[] = [
     current_co2_ppm: 420, current_occupancy_count: 8, setpoint_f: 78,
     ai_optimization_active: true, thermal_status: 'HOT',
     comfort_index_pct: 48, updated_at: new Date().toISOString(),
+    fp_x: 0.70, fp_y: 0.06, fp_w: 0.20, fp_h: 0.18,
   },
 ]
 
@@ -210,3 +217,56 @@ export const KPI: KPIData = {
 }
 
 export const GRID_CARBON_INTENSITY = 420 // gCO₂/kWh
+
+export const AI_QUEUE: AIQueueItem[] = [
+  {
+    id: 'q-1', priority: 'now', title: 'Cool East Open Plan',
+    rationale: 'Zone 3.2° above setpoint with 31 occupants. Indirect evaporative pre-cool available — outdoor WB 58°F.',
+    impact_kwh: 8.4, impact_kg: 3.5, eta: '12 min', confidence: 'HIGH',
+  },
+  {
+    id: 'q-2', priority: 'now', title: 'Irrigate Green Roof — West',
+    rationale: 'Soil moisture 28%. A 6h pulse restores 60% VWC and recovers 2.4 kW of cooling credit.',
+    impact_kwh: 6.2, impact_kg: 2.6, eta: '2 h', confidence: 'HIGH',
+  },
+  {
+    id: 'q-3', priority: 'tonight', title: 'Schedule Night Flush',
+    rationale: 'Outdoor temp dropping to 58°F at 23:30. Run zones 1, 3, 5 until 05:00.',
+    impact_kwh: 22.8, impact_kg: 9.6, eta: '11:30 PM', confidence: 'HIGH',
+  },
+  {
+    id: 'q-4', priority: 'tomorrow', title: 'Pre-cool Slab — East',
+    rationale: 'Forecast 88°F. Charge concrete mass overnight via AHU at 68°F. Awaiting your approval.',
+    impact_kwh: 18.4, impact_kg: 7.7, eta: '05:00–07:30', confidence: 'MEDIUM',
+  },
+]
+
+export const LOAD_STACK: LoadStackItem[] = [
+  { day: 'Mon',   passive: 18, nbs: 4, active: 312 },
+  { day: 'Tue',   passive: 22, nbs: 5, active: 298 },
+  { day: 'Wed',   passive: 28, nbs: 6, active: 276 },
+  { day: 'Thu',   passive: 34, nbs: 7, active: 254 },
+  { day: 'Fri',   passive: 30, nbs: 8, active: 268 },
+  { day: 'Sat',   passive: 38, nbs: 9, active: 220 },
+  { day: 'Today', passive: 32, nbs: 8, active: 244 },
+]
+
+// 14-day carbon series (kg CO₂e / m² avoided) — gentle upward trend toward target
+export const CARBON_SERIES_14D = [
+  0.0042, 0.0048, 0.0051, 0.0049, 0.0056, 0.0061, 0.0058,
+  0.0064, 0.0068, 0.0065, 0.0072, 0.0075, 0.0078, 0.0070,
+]
+export const CARBON_TARGET = 0.010
+
+export const OCCUPANT_CONVO = [
+  { role: 'AI' as const, text: "Good morning, Mia. Your zone — North Office — is reading 74.2°F, a touch warm. I've already nudged the supply temp down by 1.5° and deployed shading. Should resolve in about 8 minutes." },
+  { role: 'USER' as const, text: "It actually feels stuffy more than warm." },
+  { role: 'AI' as const, text: "Noted. CO₂ is at 820 ppm — fine, but air movement is low. I'll open the atrium dampers for 20 minutes and bump fresh-air fraction to 32%. No setpoint change needed." },
+]
+
+export const OCCUPANT_QUICK = [
+  { id: 'warm',  label: 'Too warm' },
+  { id: 'cold',  label: 'Too cold' },
+  { id: 'air',   label: 'Stuffy air' },
+  { id: 'noise', label: 'Too noisy' },
+]

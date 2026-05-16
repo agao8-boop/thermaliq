@@ -9,7 +9,7 @@ export default function GlobalHeader() {
     const tick = () =>
       setTime(
         new Date().toLocaleTimeString('en-US', {
-          hour: '2-digit', minute: '2-digit', second: '2-digit',
+          hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
         })
       )
     tick()
@@ -19,62 +19,98 @@ export default function GlobalHeader() {
 
   return (
     <header
-      className="glass-strong flex items-center justify-between px-6 z-50 flex-shrink-0"
       style={{
         height: 56,
-        borderBottom: '1px solid rgba(255,255,255,0.80)',
-        borderRadius: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '0 24px',
+        flexShrink: 0,
+        position: 'relative',
+        zIndex: 50,
+        background: 'rgba(255,255,255,0.72)',
+        backdropFilter: 'blur(28px) saturate(1.6)',
+        WebkitBackdropFilter: 'blur(28px) saturate(1.6)',
+        borderBottom: '1px solid rgba(255,255,255,0.85)',
       }}
     >
       {/* Brand */}
-      <div className="flex items-center gap-3">
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
         <span style={{
-          fontFamily: 'Cormorant Garamond, Georgia, serif',
-          fontSize: 22,
-          color: 'var(--accent)',
-          letterSpacing: '0.04em',
-          fontWeight: 500,
+          fontFamily: 'var(--font-sans)',
+          fontSize: 17,
+          fontWeight: 700,
+          color: 'var(--lg-ink-deep)',
+          letterSpacing: '-0.02em',
         }}>
-          ThermalIQ
+          thermal<span style={{ color: 'var(--lg-mint-deep)' }}>·</span>iq
         </span>
-        <span style={{ color: 'var(--rule)', fontSize: 18 }}>|</span>
-        <span style={{ color: 'var(--muted)', fontSize: 12 }}>{BUILDING.name}</span>
-        <span style={{ color: 'var(--rule)', fontSize: 11 }}>—</span>
-        <span style={{ color: 'var(--muted)', fontSize: 11 }}>{BUILDING.address}</span>
+        <span style={{
+          width: 1,
+          height: 14,
+          background: 'var(--lg-ink-15)',
+          display: 'inline-block',
+        }} />
+        <span style={{
+          fontFamily: 'var(--font-sans)',
+          fontSize: 12,
+          color: 'var(--lg-ink-55)',
+          fontWeight: 400,
+        }}>
+          {BUILDING.name}
+        </span>
       </div>
 
       {/* Centre: mode toggle */}
       <ModeToggle />
 
-      {/* Right cluster */}
-      <div className="flex items-center gap-4">
-        {/* BMS Live */}
-        <div className="flex items-center gap-1.5">
-          <span
-            className="w-2 h-2 rounded-full"
-            style={{
-              background: 'var(--accent)',
-              boxShadow: '0 0 0 3px rgba(46,125,90,0.20)',
-              animation: 'pulse 2s infinite',
-            }}
-          />
-          <span style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 10, color: 'var(--accent)', letterSpacing: '0.06em' }}>
-            BMS LIVE
-          </span>
-        </div>
-
-        {/* Grid carbon badge */}
-        <div
-          className="glass"
-          style={{ padding: '3px 10px', borderRadius: 20 }}
-        >
-          <span style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 10, color: 'var(--teal)' }}>
-            {GRID_CARBON_INTENSITY} gCO₂/kWh
-          </span>
-        </div>
-
-        {/* Clock */}
-        <span style={{ fontFamily: 'Azeret Mono, monospace', fontSize: 10, color: 'var(--muted)' }}>
+      {/* Right: live status pill cluster */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 0,
+          background: 'rgba(255,255,255,0.65)',
+          border: '1px solid var(--lg-ink-08)',
+          borderRadius: 'var(--r-pill)',
+          padding: '5px 14px',
+          backdropFilter: 'blur(12px)',
+        }}
+      >
+        {/* BMS Live dot */}
+        <span
+          style={{
+            width: 7, height: 7, borderRadius: '50%',
+            background: 'var(--lg-mint-deep)',
+            boxShadow: '0 0 0 3px rgba(63,127,102,0.20)',
+            display: 'inline-block',
+            marginRight: 6,
+          }}
+        />
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: 'var(--lg-mint-deep)',
+          letterSpacing: '0.06em',
+          marginRight: 10,
+        }}>
+          BMS LIVE
+        </span>
+        <span style={{ width: 1, height: 10, background: 'var(--lg-ink-15)', marginRight: 10 }} />
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: 'var(--lg-teal)',
+          marginRight: 10,
+        }}>
+          {GRID_CARBON_INTENSITY} gCO₂/kWh
+        </span>
+        <span style={{ width: 1, height: 10, background: 'var(--lg-ink-15)', marginRight: 10 }} />
+        <span style={{
+          fontFamily: 'var(--font-mono)',
+          fontSize: 10,
+          color: 'var(--lg-ink-55)',
+        }}>
           {time}
         </span>
       </div>

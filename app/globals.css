@@ -1,115 +1,278 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Azeret+Mono:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────────────────────────────────────
+ * Living Glass · design tokens
+ * ───────────────────────────────────────────────────────────────────────── */
+
 :root {
-  /* ── Backgrounds ───────────────────────────────── */
-  --bg-sky:    #D8EEF7;   /* soft sky blue            */
-  --bg-cream:  #FAF7EF;   /* warm cream/light yellow  */
-  --bg-sage:   #E8F0E4;   /* very soft sage           */
+  /* ── Background mesh (mint/sky/peach) ───────────────────────────────── */
+  --lg-bg-base:       #E8F1EA;   /* base mint tint */
+  --lg-bg-blue:       #DEEAEE;   /* sky tint        */
+  --lg-bg-warm:       #F2EAD9;   /* peach tint      */
 
-  /* ── Glass surfaces ─────────────────────────────── */
-  --glass:         rgba(255, 255, 255, 0.62);
-  --glass-strong:  rgba(255, 255, 255, 0.82);
-  --glass-border:  rgba(255, 255, 255, 0.90);
-  --glass-shadow:  0 4px 28px rgba(50, 90, 70, 0.10);
-  --glass-inset:   inset 0 1px 0 rgba(255,255,255,0.80);
+  /* ── Ink (text + lines) ─────────────────────────────────────────────── */
+  --lg-ink-deep:      #1B2A2A;
+  --lg-ink:           #243333;
+  --lg-ink-70:        rgba(36,51,51,0.70);
+  --lg-ink-55:        rgba(36,51,51,0.55);
+  --lg-ink-35:        rgba(36,51,51,0.35);
+  --lg-ink-15:        rgba(36,51,51,0.15);
+  --lg-ink-08:        rgba(36,51,51,0.08);
 
-  /* ── Surface fallback (non-blur contexts) ──────── */
-  --surface: rgba(255, 255, 255, 0.55);
+  /* ── Accents ────────────────────────────────────────────────────────── */
+  --lg-mint:          #7DB8A1;   /* secondary (glow, light fill)    */
+  --lg-mint-deep:     #3F7F66;   /* primary action / OK status      */
+  --lg-teal:          #5E9DA4;
+  --lg-amber:         #C9905E;   /* WARN                            */
+  --lg-rust:          #B5604B;   /* HOT                             */
+  --lg-sky:           #84B6CC;   /* COLD                            */
 
-  /* ── Accent palette ─────────────────────────────── */
-  --accent:      #2E7D5A;   /* forest green — primary   */
-  --accent-soft: #7BAE7F;   /* sage — secondary         */
-  --teal:        #4A9AA0;   /* soft teal                */
-  --amber:       #B87C4A;   /* cocoa/warm amber         */
-  --beige:       #C9B49A;   /* cocoa beige              */
-  --sky:         #5A9EC4;   /* sky blue accent          */
-  --coral:       #C45A4A;   /* warm red for HOT/error   */
-  --gray:        #8A9A96;   /* balanced gray            */
+  /* ── Glass surfaces ─────────────────────────────────────────────────── */
+  --lg-white:         rgba(255,255,255,0.78);
+  --lg-white-hi:      rgba(255,255,255,0.92);
+  --lg-white-lo:      rgba(255,255,255,0.55);
+  --lg-stroke:        rgba(255,255,255,0.85);
 
-  /* ── Typography ─────────────────────────────────── */
-  --text:  #1A2B22;                    /* dark forest              */
-  --muted: rgba(26, 43, 34, 0.48);    /* soft muted               */
-  --rule:  rgba(26, 43, 34, 0.10);    /* dividers                 */
+  /* ── Status semantic ────────────────────────────────────────────────── */
+  --ok:               var(--lg-mint-deep);
+  --warn:             var(--lg-amber);
+  --hot:              var(--lg-rust);
+  --cold:             var(--lg-sky);
 
-  /* ── Status semantic ────────────────────────────── */
-  --ok:   #2E7D5A;
-  --warn: #B87C4A;
-  --hot:  #C45A4A;
-  --cold: #4A9AA0;
+  /* ── Typography ─────────────────────────────────────────────────────── */
+  --font-sans:        'Geist', 'Inter Tight', system-ui, -apple-system, sans-serif;
+  --font-mono:        'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* ── Radii ──────────────────────────────────────────────────────────── */
+  --r-pill:           999px;
+  --r-card:           24px;
+  --r-card-sm:        16px;
+  --r-control:        12px;
+
+  /* ── Legacy aliases (keep existing components working) ──────────────── */
+  --accent:           var(--lg-mint-deep);
+  --accent-soft:      var(--lg-mint);
+  --text:             var(--lg-ink);
+  --muted:            var(--lg-ink-55);
+  --rule:             var(--lg-ink-15);
+  --glass:            var(--lg-white);
+  --glass-strong:     var(--lg-white-hi);
+  --glass-border:     var(--lg-stroke);
+  --glass-shadow:     0 20px 50px -32px rgba(31,53,52,0.30);
+  --glass-inset:      inset 0 1px 0 rgba(255,255,255,0.90);
 }
 
-/* ── Page background ─────────────────────────────────────── */
+/* ── Page background — soft animated mesh of orbs ────────────────────────── */
 html, body {
   height: 100%;
-  background:
-    radial-gradient(ellipse 80% 60% at 10% 0%, rgba(191,226,244,0.55) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 50% at 90% 5%,  rgba(210,235,200,0.40) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 70% at 50% 100%, rgba(212,191,160,0.25) 0%, transparent 65%),
-    linear-gradient(160deg, #E6F2F8 0%, #F5F2E8 50%, #EDF5EA 100%);
-  background-attachment: fixed;
-  color: var(--text);
-}
-
-body {
-  font-family: 'DM Sans', system-ui, sans-serif;
+  background: linear-gradient(155deg,
+    var(--lg-bg-base) 0%,
+    var(--lg-bg-blue) 45%,
+    var(--lg-bg-warm) 100%
+  );
+  color: var(--lg-ink);
+  font-family: var(--font-sans);
   font-size: 13px;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ── Glass utility ───────────────────────────────────────── */
+/* ── Orb drift animation (30s, subtle position oscillation) ─────────────── */
+@keyframes lg-orb-drift-1 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  33%  { transform: translate(3%, -4%) scale(1.04); }
+  66%  { transform: translate(-2%, 3%) scale(0.97); }
+  100% { transform: translate(0%, 0%) scale(1); }
+}
+@keyframes lg-orb-drift-2 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  40%  { transform: translate(-4%, 3%) scale(1.05); }
+  70%  { transform: translate(2%, -2%) scale(0.96); }
+  100% { transform: translate(0%, 0%) scale(1); }
+}
+@keyframes lg-orb-drift-3 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  25%  { transform: translate(2%, 4%) scale(1.03); }
+  60%  { transform: translate(-3%, -2%) scale(0.98); }
+  100% { transform: translate(0%, 0%) scale(1); }
+}
+
+/* The orbs are what make the glass surfaces feel like they're floating in space */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(closest-side at 12% 18%, rgba(125,184,161,0.55), transparent 70%),
+    radial-gradient(closest-side at 90%  8%, rgba(132,182,204,0.45), transparent 65%),
+    radial-gradient(closest-side at 75% 92%, rgba(201,144,94,0.30), transparent 65%),
+    radial-gradient(closest-side at 30% 78%, rgba( 95,158,164,0.30), transparent 60%);
+  animation: lg-orb-drift-1 30s ease-in-out infinite;
+}
+
+/* Grain layer — increases tactility */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  z-index: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+/* App shell must sit above the mesh */
+#__next, body > main { position: relative; z-index: 1; }
+
+/* ── Glass primitives ──────────────────────────────────────────────────── */
 .glass {
-  background: var(--glass);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow), var(--glass-inset);
+  background: var(--lg-white);
+  -webkit-backdrop-filter: blur(28px) saturate(1.6);
+          backdrop-filter: blur(28px) saturate(1.6);
+  border: 1px solid var(--lg-stroke);
+  border-radius: var(--r-card);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.90) inset,
+    0 20px 50px -32px rgba(31,53,52,0.30),
+    0 1px 2px rgba(31,53,52,0.05);
 }
-
 .glass-strong {
-  background: var(--glass-strong);
-  backdrop-filter: blur(24px) saturate(1.6);
-  -webkit-backdrop-filter: blur(24px) saturate(1.6);
-  border: 1px solid var(--glass-border);
-  box-shadow: var(--glass-shadow), var(--glass-inset);
+  background: var(--lg-white-hi);
+  -webkit-backdrop-filter: blur(32px) saturate(1.8);
+          backdrop-filter: blur(32px) saturate(1.8);
+  border: 1px solid var(--lg-stroke);
+  border-radius: var(--r-card);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,0.95) inset,
+    0 24px 60px -34px rgba(31,53,52,0.35),
+    0 1px 2px rgba(31,53,52,0.05);
+}
+.glass-soft {
+  background: var(--lg-white-lo);
+  border: 1px solid var(--lg-stroke);
+  border-radius: var(--r-card-sm);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.95) inset;
 }
 
-/* ── Scrollbar ───────────────────────────────────────────── */
-::-webkit-scrollbar { width: 4px; height: 4px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(26,43,34,0.15); border-radius: 2px; }
+/* ── Label / numeric helpers ───────────────────────────────────────────── */
+.label-eyebrow {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lg-ink-55);
+}
+.num-display {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--lg-ink-deep);
+}
+.num-mono {
+  font-family: var(--font-mono);
+  color: var(--lg-ink);
+}
 
-/* ── Range input ─────────────────────────────────────────── */
+/* ── Pill button (gradient mint) ──────────────────────────────────────── */
+.btn-primary {
+  background: linear-gradient(180deg, var(--lg-mint), var(--lg-mint-deep));
+  color: white;
+  border: none;
+  border-radius: var(--r-pill);
+  padding: 11px 18px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  box-shadow:
+    0 6px 14px -6px rgba(63,127,102,0.60),
+    0 1px 0 rgba(255,255,255,0.40) inset;
+  transition: transform .15s, box-shadow .15s;
+}
+.btn-primary:hover { transform: translateY(-1px); }
+.btn-primary:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: rgba(255,255,255,0.70);
+  border: 1px solid var(--lg-ink-15);
+  border-radius: var(--r-pill);
+  padding: 11px 16px;
+  color: var(--lg-ink-70);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* ── Mode toggle (dark ink pill) ───────────────────────────────────────── */
+.mode-toggle {
+  display: inline-flex;
+  padding: 4px;
+  background: var(--lg-ink);
+  border-radius: var(--r-pill);
+  box-shadow: 0 8px 22px -12px rgba(31,53,52,0.5);
+}
+.mode-toggle__option {
+  padding: 8px 18px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  cursor: pointer;
+  color: rgba(255,255,255,0.9);
+  transition: all .2s;
+}
+.mode-toggle__option--active {
+  background: var(--lg-white-hi);
+  color: var(--lg-ink-deep);
+  font-weight: 600;
+  box-shadow:
+    0 4px 14px -6px rgba(0,0,0,0.25),
+    0 1px 0 rgba(255,255,255,0.95) inset;
+}
+
+/* ── Status dot ────────────────────────────────────────────────────────── */
+.status-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.status-dot--ok   { background: var(--ok);   box-shadow: 0 0 0 3px rgba(63,127,102,0.20); }
+.status-dot--warn { background: var(--warn); box-shadow: 0 0 0 3px rgba(201,144,94,0.20); }
+.status-dot--hot  { background: var(--hot);  box-shadow: 0 0 0 3px rgba(181,96,75,0.20);  }
+.status-dot--cold { background: var(--cold); box-shadow: 0 0 0 3px rgba(132,182,204,0.20); }
+
+/* ── Range input ───────────────────────────────────────────────────────── */
 input[type="range"] {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 4px;
-  background: rgba(26,43,34,0.12);
-  border-radius: 3px;
-  outline: none;
+  -webkit-appearance: none; appearance: none;
+  height: 4px; background: rgba(36,51,51,0.12); border-radius: 3px; outline: none;
   cursor: pointer;
 }
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 16px; height: 16px;
   background: white;
-  border: 2px solid var(--accent);
+  border: 2px solid var(--lg-mint-deep);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: 0 1px 6px rgba(46,125,90,0.25);
+  box-shadow: 0 1px 6px rgba(63,127,102,0.25);
 }
 
-/* ── Animations ──────────────────────────────────────────── */
+/* ── Scrollbar ─────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(36,51,51,0.15); border-radius: 3px; }
+
+/* ── Drawer slide-in animation ─────────────────────────────────────────── */
+@keyframes lg-sheet-in {
+  from { transform: translateX(40px); opacity: 0; }
+  to   { transform: none; opacity: 1; }
+}
+.lg-sheet { animation: lg-sheet-in 280ms cubic-bezier(.2,.7,.1,1); }
+
+/* ── Utility animations ─────────────────────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 .fade-up { animation: fadeUp 0.4s ease both; }
-
-@keyframes shimmer {
-  0%   { opacity: 0.5; }
-  50%  { opacity: 1; }
-  100% { opacity: 0.5; }
-}
-.shimmer { animation: shimmer 2s ease-in-out infinite; }

@@ -3,37 +3,50 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const TABS = [
-  { href: '/zones',   label: 'Occupant Comfort' },
-  { href: '/passive', label: 'Passive Strategies' },
-  { href: '/nbs',     label: 'Nature-Based Solutions' },
+  { href: '/overview', label: 'Overview' },
+  { href: '/zones',    label: 'Comfort' },
+  { href: '/passive',  label: 'Passive' },
+  { href: '/nbs',      label: 'Nature' },
 ]
 
 export default function TabNav() {
   const path = usePathname()
   return (
     <nav
-      className="flex px-6 flex-shrink-0"
       style={{
-        borderBottom: '1px solid rgba(26,43,34,0.10)',
-        background: 'rgba(255,255,255,0.40)',
-        backdropFilter: 'blur(8px)',
+        display: 'flex',
+        gap: 6,
+        padding: '10px 24px',
+        flexShrink: 0,
+        borderBottom: '1px solid var(--lg-ink-08)',
+        background: 'rgba(255,255,255,0.30)',
+        backdropFilter: 'blur(12px)',
       }}
     >
       {TABS.map(t => {
-        const active = path.startsWith(t.href)
+        const active = path === t.href || (t.href !== '/overview' && path.startsWith(t.href))
         return (
           <Link
             key={t.href}
             href={t.href}
             style={{
-              padding: '11px 20px',
+              padding: '7px 16px',
+              borderRadius: 'var(--r-pill)',
               fontSize: 12,
-              letterSpacing: '0.03em',
-              fontWeight: active ? 500 : 400,
-              borderBottom: `2px solid ${active ? 'var(--accent)' : 'transparent'}`,
-              color: active ? 'var(--accent)' : 'var(--muted)',
+              fontFamily: 'var(--font-sans)',
+              fontWeight: active ? 600 : 400,
+              color: active ? 'var(--lg-ink-deep)' : 'var(--lg-ink-55)',
               textDecoration: 'none',
-              transition: 'color 0.15s',
+              transition: 'all 0.15s',
+              ...(active ? {
+                background: 'var(--lg-white-hi)',
+                backdropFilter: 'blur(16px)',
+                WebkitBackdropFilter: 'blur(16px)',
+                border: '1px solid var(--lg-stroke)',
+                boxShadow: '0 2px 8px -4px rgba(31,53,52,0.20), 0 1px 0 rgba(255,255,255,0.95) inset',
+              } : {
+                border: '1px solid transparent',
+              }),
             }}
           >
             {t.label}
