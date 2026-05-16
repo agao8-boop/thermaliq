@@ -1,3 +1,4 @@
+// components/KPIStrip.tsx
 import { KPI } from '@/lib/mock-data'
 
 const STATUS_COLOR = {
@@ -52,37 +53,24 @@ export default function KPIStrip() {
         <div
           key={i}
           style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 2,
+            flex: 1,                                  /* ← fills available width */
+            display: 'flex', flexDirection: 'column', gap: 2,
             padding: '10px 16px',
             background: 'rgba(255,255,255,0.70)',
             border: '1px solid var(--lg-stroke)',
             borderRadius: 'var(--r-control)',
             backdropFilter: 'blur(16px)',
             boxShadow: '0 1px 0 rgba(255,255,255,0.95) inset',
-            minWidth: 110,
           }}
         >
-          <div className="label-eyebrow" style={{ marginBottom: 2 }}>
-            {c.label}
-          </div>
+          <div className="label-eyebrow" style={{ marginBottom: 2 }}>{c.label}</div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: 3 }}>
-            <span
-              className="num-display"
-              style={{ fontSize: 22, lineHeight: 1, color: c.color }}
-            >
-              {c.value}
-            </span>
+            <span className="num-display" style={{ fontSize: 22, lineHeight: 1, color: c.color }}>{c.value}</span>
             {'unit' in c && (
-              <span style={{ fontSize: 10, color: 'var(--lg-ink-55)', fontFamily: 'var(--font-sans)' }}>
-                {c.unit}
-              </span>
+              <span style={{ fontSize: 10, color: 'var(--lg-ink-55)', fontFamily: 'var(--font-sans)' }}>{c.unit}</span>
             )}
           </div>
-          <div style={{ fontSize: 10, color: 'var(--lg-ink-35)', fontFamily: 'var(--font-sans)' }}>
-            {c.sub}
-          </div>
+          <div style={{ fontSize: 10, color: 'var(--lg-ink-35)' }}>{c.sub}</div>
         </div>
       ))}
     </div>
