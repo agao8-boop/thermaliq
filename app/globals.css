@@ -19,10 +19,10 @@
   --lg-sky:        #8AB4CC;
 
   /* ── Glow accents for mesh orbs ─────────────────────────────────────── */
-  --lg-glow-green: rgba(100,185,150,0.50);
-  --lg-glow-blue:  rgba(100,165,210,0.40);
-  --lg-glow-gold:  rgba(200,185,100,0.30);
-  --lg-glow-teal:  rgba(80,170,180,0.35);
+  --lg-glow-green: rgba(100,185,150,0.68);
+  --lg-glow-blue:  rgba(100,165,210,0.58);
+  --lg-glow-gold:  rgba(200,185,100,0.46);
+  --lg-glow-teal:  rgba(80,170,180,0.54);
 
   /* ── Ink (text + lines) ─────────────────────────────────────────────── */
   --lg-ink-deep:      #1B2A2A;
@@ -97,15 +97,15 @@ body::before {
     radial-gradient(ellipse 45% 50% at 28% 75%, var(--lg-glow-teal),  transparent 60%),
     radial-gradient(ellipse 40% 40% at 55% 45%, var(--lg-glow-blue),  transparent 55%),
     radial-gradient(ellipse 35% 35% at 90% 55%, var(--lg-glow-green), transparent 50%);
-  animation: lg-mesh-flow 25s ease-in-out infinite alternate;
+  animation: lg-mesh-flow 14s ease-in-out infinite alternate;
 }
 
 @keyframes lg-mesh-flow {
-  0%   { transform: scale(1)    rotate(0deg);    opacity: 1; }
-  25%  { transform: scale(1.04) rotate(0.8deg);  opacity: 0.95; }
-  50%  { transform: scale(0.97) rotate(-0.6deg); opacity: 1; }
-  75%  { transform: scale(1.03) rotate(0.4deg);  opacity: 0.97; }
-  100% { transform: scale(1)    rotate(0deg);    opacity: 1; }
+  0%   { transform: scale(1)    rotate(0deg);     opacity: 1; }
+  25%  { transform: scale(1.07) rotate(1.4deg);   opacity: 0.92; }
+  50%  { transform: scale(0.95) rotate(-1.1deg);  opacity: 1; }
+  75%  { transform: scale(1.06) rotate(0.8deg);   opacity: 0.94; }
+  100% { transform: scale(1)    rotate(0deg);     opacity: 1; }
 }
 
 /* Grain layer — increases tactility */

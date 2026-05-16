@@ -17,7 +17,18 @@ export default function GettingStarted({ onContinue }: Props) {
         overflow: 'hidden',
       }}
     >
-      {/* Hero gradient overlay (building image is on the layout bg) */}
+      {/* Building photo — scoped to this screen only */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute', inset: 0, zIndex: 0,
+          backgroundImage: "url('/building-bg.jpg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          filter: 'brightness(0.80) saturate(0.85)',
+        }}
+      />
+      {/* Hero gradient overlay */}
       <div
         aria-hidden
         style={{
