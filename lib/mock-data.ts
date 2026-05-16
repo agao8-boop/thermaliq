@@ -270,3 +270,10 @@ export const OCCUPANT_QUICK = [
   { id: 'air',   label: 'Stuffy air' },
   { id: 'noise', label: 'Too noisy' },
 ]
+
+export const QUICK_CHIP_RESPONSES: Record<string, string> = {
+  'Too warm': "I've nudged the supply air temp down 1.5° and opened your east dampers 20%. Should feel cooler in about 6 minutes.",
+  'Too cold': "Raising supply temp by 2° and reducing fresh-air fraction to 18% — thermal mass should hold that for 90 minutes.",
+  'Stuffy air': "CO₂ is fine at 820 ppm but velocity is low. Opening atrium dampers for 20 minutes and bumping fresh-air to 32%. No setpoint change.",
+  'Too noisy': "I can't control acoustics directly, but I've checked: the AHU fan is at minimum speed. Consider noise-cancelling mode — I'll note your feedback.",
+}
