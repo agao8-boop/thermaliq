@@ -277,3 +277,18 @@ export const QUICK_CHIP_RESPONSES: Record<string, string> = {
   'Stuffy air': "CO₂ is fine at 820 ppm but velocity is low. Opening atrium dampers for 20 minutes and bumping fresh-air to 32%. No setpoint change.",
   'Too noisy': "I can't control acoustics directly, but I've checked: the AHU fan is at minimum speed. Consider noise-cancelling mode — I'll note your feedback.",
 }
+
+export const ALMS_PRESETS: Array<{ q: string; a: string }> = [
+  {
+    q: 'Why is East Open Plan hot?',
+    a: "East Open Plan is 3.2° above setpoint. 31 occupants plus afternoon solar gain on east-facing glazing. I've queued indirect evaporative pre-cool — expect resolution in 12 minutes.",
+  },
+  {
+    q: 'Run night flush tonight',
+    a: "Scheduled. Night flush will run zones 1, 3, 5 from 23:30 to 05:00. Outdoor temp forecast 58°F — optimal. Expected savings: 22.8 kWh.",
+  },
+  {
+    q: 'Carbon savings this week',
+    a: "This week: 8.4 t CO₂e avoided vs. 14.2 t baseline — a 41% reduction. Passive strategies contributed 32 kWh/day, NbS added 8 kWh. On track for monthly target.",
+  },
+]
