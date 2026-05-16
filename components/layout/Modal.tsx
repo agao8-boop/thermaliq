@@ -19,7 +19,28 @@ export default function Modal({ open, onClose, title, subtitle, children, width 
     panelRef.current?.focus()
     function onKey(e: KeyboardEvent) { if (e.key === 'Escape') onClose() }
     document.addEventListener('keydown', onKey)
-    return () => document.removeEventListener('keydown', onKey)
+
+    function trapFocus(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return
+      const panel = panelRef.current
+      if (!panel) return
+      const focusable = panel.querySelectorAll<HTMLElement>(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      )
+      const first = focusable[0]
+      const last = focusable[focusable.length - 1]
+      if (e.shiftKey) {
+        if (document.activeElement === first) { e.preventDefault(); last?.focus() }
+      } else {
+        if (document.activeElement === last) { e.preventDefault(); first?.focus() }
+      }
+    }
+    document.addEventListener('keydown', trapFocus)
+
+    return () => {
+      document.removeEventListener('keydown', onKey)
+      document.removeEventListener('keydown', trapFocus)
+    }
   }, [open, onClose])
 
   if (!open) return null
@@ -34,6 +55,7 @@ export default function Modal({ open, onClose, title, subtitle, children, width 
     >
       {/* Backdrop */}
       <div
+        aria-hidden="true"
         onClick={onClose}
         style={{
           position: 'absolute', inset: 0,
@@ -46,6 +68,9 @@ export default function Modal({ open, onClose, title, subtitle, children, width 
       <div
         ref={panelRef}
         tabIndex={-1}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         style={{
           position: 'relative', zIndex: 1,
           width, maxWidth: '95vw', maxHeight: '88vh',
@@ -64,19 +89,22 @@ export default function Modal({ open, onClose, title, subtitle, children, width 
         {/* Header */}
         <div style={{
           padding: '22px 24px 16px',
-          borderBottom: '1px solid rgba(36,51,51,0.07)',
+          borderBottom: '1px solid var(--lg-ink-08)',
           flexShrink: 0,
           display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
         }}>
           <div>
-            <div style={{
-              fontSize: 17, fontWeight: 700, color: 'var(--lg-ink-deep)',
-              fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em',
-            }}>
+            <div
+              id="modal-title"
+              style={{
+                fontSize: 17, fontWeight: 700, color: 'var(--lg-ink-deep)',
+                fontFamily: 'var(--font-sans)', letterSpacing: '-0.02em',
+              }}
+            >
               {title}
             </div>
             {subtitle && (
-              <div style={{ fontSize: 11, color: 'var(--lg-ink-55)', marginTop: 3 }}>
+              <div style={{ fontSize: 11, color: 'var(--lg-ink-55)', marginTop: 3, fontFamily: 'var(--font-sans)' }}>
                 {subtitle}
               </div>
             )}
@@ -85,7 +113,7 @@ export default function Modal({ open, onClose, title, subtitle, children, width 
             onClick={onClose}
             style={{
               width: 30, height: 30, borderRadius: '50%',
-              border: '1px solid rgba(36,51,51,0.12)',
+              border: '1px solid var(--lg-ink-15)',
               background: 'rgba(255,255,255,0.70)',
               color: 'var(--lg-ink-55)', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
