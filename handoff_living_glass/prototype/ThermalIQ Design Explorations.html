@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ThermalIQ · Design Explorations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0E1316; color: #E5E5E0; font-family: 'Geist', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  input[type="range"] { -webkit-appearance: none; appearance: none; height: 4px; background: rgba(0,0,0,0.12); border-radius: 3px; outline: none; }
+  input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: white; border: 2px solid currentColor; border-radius: 50%; cursor: pointer; }
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-thumb { background: rgba(127,127,127,0.25); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="design-canvas.jsx"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="shared.jsx"></script>
+<script type="text/babel" src="directions/verdant.jsx"></script>
+<script type="text/babel" src="directions/glass.jsx"></script>
+<script type="text/babel" src="directions/studio.jsx"></script>
+
+<script type="text/babel" data-presets="react">
+const TWEAKS_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "showLayerOpen": true,
+  "highlightZone": "z-004"
+}/*EDITMODE-END*/;
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAKS_DEFAULTS);
+  const zoneId = t.highlightZone || 'z-003';
+
+  return (
+    <>
+      <DesignCanvas title="ThermalIQ · Design Explorations" subtitle="Three directions · admin overview · drill-in layer · occupant mode">
+
+        <DCSection id="intro" title="Read me first">
+          <DCArtboard id="intro-card" label="The brief, restated" width={1240} height={420}>
+            <div style={{
+              width: '100%', height: '100%', padding: '54px 64px', background: '#FBF7EB',
+              fontFamily: "'Geist', system-ui, sans-serif", color: '#1E2A1C', display: 'flex', flexDirection: 'column', gap: 18,
+              borderTop: '3px solid #3F5A3D',
+            }}>
+              <div style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: 42, fontWeight: 300, lineHeight: 1.15, letterSpacing: '-0.02em' }}>
+                Three calmer routes for <em style={{ color: '#3F5A3D' }}>ThermalIQ</em>.
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 28, marginTop: 6 }}>
+                {[
+                  { name: 'Verdant Atelier', tag: 'Editorial · cream paper', body: 'Calm, museum-quiet. Serif headlines, one big decarbonization story, restrained surfaces. The decarbonization story is told as a number you can read across the room.' },
+                  { name: 'Living Glass',    tag: 'Layered glass · mint mesh', body: 'Frosted glass on a soft photographic backdrop. Tactile depth — buttons that feel pressable. Building rendered as an isometric block you can poke.' },
+                  { name: 'Carbon Studio',  tag: 'Charcoal · chart-forward', body: 'Quiet-technical reporting tool. Big stacked area chart of carbon avoided, mono numerics, lime/sage accents. Built for the operator who wants the numbers.' },
+                ].map((d, i) => (
+                  <div key={d.name}>
+                    <div style={{ fontFamily: "'Geist Mono', monospace", fontSize: 10, letterSpacing: '0.18em', color: 'rgba(30,42,28,0.55)', textTransform: 'uppercase' }}>0{i + 1} · {d.tag}</div>
+                    <div style={{ fontFamily: "'Newsreader', Georgia, serif", fontSize: 22, color: '#1E2A1C', marginTop: 6, fontStyle: 'italic' }}>{d.name}</div>
+                    <div style={{ fontSize: 13, lineHeight: 1.55, color: 'rgba(30,42,28,0.7)', marginTop: 8 }}>{d.body}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: 'auto', display: 'flex', gap: 18, paddingTop: 18, borderTop: '1px solid rgba(30,42,28,0.08)', fontSize: 12, color: 'rgba(30,42,28,0.55)' }}>
+                <span>Across all three:</span>
+                <span>· AI Director kept as sidebar</span>
+                <span>· Visualized zone layout (no plain rows)</span>
+                <span>· Occupant mode is AI-led, ~1 screen</span>
+                <span>· Click any zone or queue item to open a layered drill-in</span>
+              </div>
+            </div>
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="d1" title="01 · Verdant Atelier · admin + drill-in + occupant">
+          <DCArtboard id="d1-admin" label="Admin · overview" width={1280} height={820}>
+            <VerdantAdmin />
+          </DCArtboard>
+          <DCArtboard id="d1-drill" label="Admin · zone drill-in (layered sheet)" width={1280} height={820}>
+            <VerdantAdmin openZoneId={zoneId} />
+          </DCArtboard>
+          <DCArtboard id="d1-occ" label="Occupant · AI-led" width={460} height={820}>
+            <VerdantOccupant />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="d2" title="02 · Living Glass · admin + drill-in + occupant">
+          <DCArtboard id="d2-admin" label="Admin · overview" width={1280} height={820}>
+            <LivingGlassAdmin />
+          </DCArtboard>
+          <DCArtboard id="d2-drill" label="Admin · zone drill-in (glass sheet)" width={1280} height={820}>
+            <LivingGlassAdmin openZoneId={zoneId} />
+          </DCArtboard>
+          <DCArtboard id="d2-occ" label="Occupant · AI-led" width={460} height={820}>
+            <LivingGlassOccupant />
+          </DCArtboard>
+        </DCSection>
+
+        <DCSection id="d3" title="03 · Carbon Studio · admin + drill-in + occupant">
+          <DCArtboard id="d3-admin" label="Admin · overview" width={1280} height={820}>
+            <CarbonStudioAdmin />
+          </DCArtboard>
+          <DCArtboard id="d3-drill" label="Admin · zone drill-in" width={1280} height={820}>
+            <CarbonStudioAdmin openZoneId={zoneId} />
+          </DCArtboard>
+          <DCArtboard id="d3-occ" label="Occupant · AI-led" width={460} height={820}>
+            <CarbonStudioOccupant />
+          </DCArtboard>
+        </DCSection>
+
+      </DesignCanvas>
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Drill-in layer" />
+        <TweakSelect
+          label="Which zone opens"
+          value={t.highlightZone}
+          options={[
+            { value: 'z-001', label: 'North Office (WARN)' },
+            { value: 'z-002', label: 'South Conference (OK)' },
+            { value: 'z-003', label: 'East Open Plan (HOT)' },
+            { value: 'z-004', label: 'West Executive (COLD)' },
+            { value: 'z-005', label: 'Atrium L2 (OK)' },
+            { value: 'z-006', label: 'Roof Terrace (HOT)' },
+          ]}
+          onChange={(v) => setTweak('highlightZone', v)}
+        />
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
