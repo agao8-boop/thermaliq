@@ -12,18 +12,18 @@ const RANGE_DATA: Record<Range, { avoided: number; baseline: number; label: stri
 
 // Radial progress ring
 function ProgressRing({ pct }: { pct: number }) {
-  const r = 70
-  const stroke = 9
+  const r = 80
+  const stroke = 10
   const norm = r - stroke / 2
   const circ = 2 * Math.PI * norm
   const dash = (pct / 100) * circ
 
   return (
-    <svg width={160} height={160} style={{ transform: 'rotate(-90deg)' }}>
-      <circle cx={80} cy={80} r={norm}
+    <svg width={180} height={180} style={{ transform: 'rotate(-90deg)' }}>
+      <circle cx={90} cy={90} r={norm}
         fill="none" stroke="rgba(36,51,51,0.08)" strokeWidth={stroke}
       />
-      <circle cx={80} cy={80} r={norm}
+      <circle cx={90} cy={90} r={norm}
         fill="none"
         stroke="url(#mintGrad)"
         strokeWidth={stroke}
@@ -112,8 +112,8 @@ export default function CarbonHero() {
       </div>
 
       {/* Ring + number */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-        <div style={{ position: 'relative', width: 160, height: 160, flexShrink: 0 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 24, flex: 1 }}>
+        <div style={{ position: 'relative', width: 180, height: 180, flexShrink: 0 }}>
           <ProgressRing pct={pct} />
           {/* Centre text */}
           <div style={{
@@ -121,7 +121,7 @@ export default function CarbonHero() {
             display: 'flex', flexDirection: 'column',
             alignItems: 'center', justifyContent: 'center',
           }}>
-            <div style={{ fontSize: 30, fontWeight: 700, color: 'var(--lg-mint-deep)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.04em', lineHeight: 1 }}>
+            <div style={{ fontSize: 34, fontWeight: 700, color: 'var(--lg-mint-deep)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.04em', lineHeight: 1 }}>
               {d.avoided}
             </div>
             <div style={{ fontSize: 10, color: 'var(--lg-ink-55)', marginTop: 2 }}>t CO₂e</div>
@@ -129,10 +129,10 @@ export default function CarbonHero() {
         </div>
 
         {/* Right stats */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 0, justifyContent: 'space-between', minHeight: 160 }}>
           <div>
             <div className="label-eyebrow" style={{ marginBottom: 4 }}>vs. baseline</div>
-            <div style={{ fontSize: 22, fontWeight: 700, color: 'var(--lg-ink-deep)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.03em' }}>
+            <div style={{ fontSize: 28, fontWeight: 700, color: 'var(--lg-ink-deep)', fontFamily: 'var(--font-sans)', letterSpacing: '-0.03em' }}>
               {d.baseline} t
             </div>
             <div style={{ fontSize: 11, color: 'var(--lg-mint-deep)' }}>
