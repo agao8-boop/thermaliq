@@ -6,10 +6,23 @@
  * ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-  /* ── Background mesh (mint/sky/peach) ───────────────────────────────── */
-  --lg-bg-base:       #E8F1EA;   /* base mint tint */
-  --lg-bg-blue:       #DEEAEE;   /* sky tint        */
-  --lg-bg-warm:       #F2EAD9;   /* peach tint      */
+  /* ── Sea Mist palette ────────────────────────────────────────────────── */
+  --lg-bg-base:    #E8F2EC;
+  --lg-bg-blue:    #DDE8F0;
+  --lg-bg-warm:    #EEF0D8;
+
+  --lg-mint:       #8EC5A8;
+  --lg-mint-deep:  #3D8A6A;
+  --lg-teal:       #6AADB8;
+  --lg-amber:      #C4A05A;
+  --lg-rust:       #B07860;
+  --lg-sky:        #8AB4CC;
+
+  /* ── Glow accents for mesh orbs ─────────────────────────────────────── */
+  --lg-glow-green: rgba(100,185,150,0.50);
+  --lg-glow-blue:  rgba(100,165,210,0.40);
+  --lg-glow-gold:  rgba(200,185,100,0.30);
+  --lg-glow-teal:  rgba(80,170,180,0.35);
 
   /* ── Ink (text + lines) ─────────────────────────────────────────────── */
   --lg-ink-deep:      #1B2A2A;
@@ -19,14 +32,6 @@
   --lg-ink-35:        rgba(36,51,51,0.35);
   --lg-ink-15:        rgba(36,51,51,0.15);
   --lg-ink-08:        rgba(36,51,51,0.08);
-
-  /* ── Accents ────────────────────────────────────────────────────────── */
-  --lg-mint:          #7DB8A1;   /* secondary (glow, light fill)    */
-  --lg-mint-deep:     #3F7F66;   /* primary action / OK status      */
-  --lg-teal:          #5E9DA4;
-  --lg-amber:         #C9905E;   /* WARN                            */
-  --lg-rust:          #B5604B;   /* HOT                             */
-  --lg-sky:           #84B6CC;   /* COLD                            */
 
   /* ── Glass surfaces ─────────────────────────────────────────────────── */
   --lg-white:         rgba(255,255,255,0.78);
@@ -66,10 +71,11 @@
 /* ── Page background — soft animated mesh of orbs ────────────────────────── */
 html, body {
   height: 100%;
-  background: linear-gradient(155deg,
-    var(--lg-bg-base) 0%,
-    var(--lg-bg-blue) 45%,
-    var(--lg-bg-warm) 100%
+  background: linear-gradient(145deg,
+    #EAF2ED 0%,
+    #DDE8F2 35%,
+    #EAF0D6 70%,
+    #DFF0E8 100%
   );
   color: var(--lg-ink);
   font-family: var(--font-sans);
@@ -78,27 +84,6 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── Orb drift animation (30s, subtle position oscillation) ─────────────── */
-@keyframes lg-orb-drift-1 {
-  0%   { transform: translate(0%, 0%) scale(1); }
-  33%  { transform: translate(3%, -4%) scale(1.04); }
-  66%  { transform: translate(-2%, 3%) scale(0.97); }
-  100% { transform: translate(0%, 0%) scale(1); }
-}
-@keyframes lg-orb-drift-2 {
-  0%   { transform: translate(0%, 0%) scale(1); }
-  40%  { transform: translate(-4%, 3%) scale(1.05); }
-  70%  { transform: translate(2%, -2%) scale(0.96); }
-  100% { transform: translate(0%, 0%) scale(1); }
-}
-@keyframes lg-orb-drift-3 {
-  0%   { transform: translate(0%, 0%) scale(1); }
-  25%  { transform: translate(2%, 4%) scale(1.03); }
-  60%  { transform: translate(-3%, -2%) scale(0.98); }
-  100% { transform: translate(0%, 0%) scale(1); }
-}
-
-/* The orbs are what make the glass surfaces feel like they're floating in space */
 body::before {
   content: "";
   position: fixed;
@@ -106,11 +91,21 @@ body::before {
   pointer-events: none;
   z-index: 0;
   background-image:
-    radial-gradient(closest-side at 12% 18%, rgba(125,184,161,0.55), transparent 70%),
-    radial-gradient(closest-side at 90%  8%, rgba(132,182,204,0.45), transparent 65%),
-    radial-gradient(closest-side at 75% 92%, rgba(201,144,94,0.30), transparent 65%),
-    radial-gradient(closest-side at 30% 78%, rgba( 95,158,164,0.30), transparent 60%);
-  animation: lg-orb-drift-1 30s ease-in-out infinite;
+    radial-gradient(ellipse 55% 55% at 15% 20%, var(--lg-glow-green), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 82% 12%, var(--lg-glow-blue),  transparent 65%),
+    radial-gradient(ellipse 60% 45% at 70% 85%, var(--lg-glow-gold),  transparent 65%),
+    radial-gradient(ellipse 45% 50% at 28% 75%, var(--lg-glow-teal),  transparent 60%),
+    radial-gradient(ellipse 40% 40% at 55% 45%, var(--lg-glow-blue),  transparent 55%),
+    radial-gradient(ellipse 35% 35% at 90% 55%, var(--lg-glow-green), transparent 50%);
+  animation: lg-mesh-flow 25s ease-in-out infinite alternate;
+}
+
+@keyframes lg-mesh-flow {
+  0%   { transform: scale(1)    rotate(0deg);    opacity: 1; }
+  25%  { transform: scale(1.04) rotate(0.8deg);  opacity: 0.95; }
+  50%  { transform: scale(0.97) rotate(-0.6deg); opacity: 1; }
+  75%  { transform: scale(1.03) rotate(0.4deg);  opacity: 0.97; }
+  100% { transform: scale(1)    rotate(0deg);    opacity: 1; }
 }
 
 /* Grain layer — increases tactility */
@@ -276,3 +271,13 @@ input[type="range"]::-webkit-slider-thumb {
   to   { opacity: 1; transform: translateY(0); }
 }
 .fade-up { animation: fadeUp 0.4s ease both; }
+
+@keyframes modal-pop {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes bt-scan-ring {
+  0%   { opacity: 0.8; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.8); }
+}
