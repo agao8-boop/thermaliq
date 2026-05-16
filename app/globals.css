@@ -72,10 +72,10 @@
 html, body {
   height: 100%;
   background: linear-gradient(145deg,
-    #EAF2ED 0%,
-    #DDE8F2 35%,
-    #EAF0D6 70%,
-    #DFF0E8 100%
+    var(--lg-bg-base) 0%,
+    var(--lg-bg-blue) 35%,
+    var(--lg-bg-warm) 70%,
+    var(--lg-bg-base) 100%
   );
   color: var(--lg-ink);
   font-family: var(--font-sans);
