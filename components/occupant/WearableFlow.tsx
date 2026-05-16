@@ -1,6 +1,6 @@
 // components/occupant/WearableFlow.tsx
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 type Step = 'permission' | 'scanning' | 'connected'
 
@@ -20,8 +20,13 @@ export default function WearableFlow({ onDismiss }: Props) {
 
   function handleAllow() {
     setStep('scanning')
-    setTimeout(() => setStep('connected'), 2500)
   }
+
+  useEffect(() => {
+    if (step !== 'scanning') return
+    const id = setTimeout(() => setStep('connected'), 2500)
+    return () => clearTimeout(id)
+  }, [step])
 
   // ── Permission gate ───────────────────────────────────────────────────────
   if (step === 'permission') {
@@ -136,7 +141,7 @@ export default function WearableFlow({ onDismiss }: Props) {
         <span style={{
           width: 7, height: 7, borderRadius: '50%',
           background: 'var(--lg-mint-deep)',
-          boxShadow: '0 0 0 3px rgba(63,127,102,0.22)',
+          boxShadow: '0 0 0 3px color-mix(in srgb, var(--lg-mint-deep) 22%, transparent)',
         }} />
         <span style={{
           fontSize: 10, letterSpacing: '0.10em', textTransform: 'uppercase' as const,
