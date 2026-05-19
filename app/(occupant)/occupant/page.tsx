@@ -113,12 +113,11 @@ export default function OccupantPage() {
       <div style={{ paddingTop: 8 }}>
         <h1 style={{
           fontFamily: 'var(--font-sans)', fontSize: 24, fontWeight: 700,
-          color: 'white', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: 4,
-          textShadow: '0 1px 8px rgba(0,0,0,0.25)',
+          color: 'var(--lg-ink-deep)', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: 4,
         }}>
           Hello, {USER_NAME}
         </h1>
-        <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.75)', fontFamily: 'var(--font-sans)' }}>
+        <p style={{ fontSize: 12, color: 'var(--lg-ink-55)', fontFamily: 'var(--font-sans)' }}>
           📍 {ZONE.name} · Floor {ZONE.floor} — auto-detected
         </p>
       </div>
@@ -181,7 +180,7 @@ export default function OccupantPage() {
         <div>
           <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--lg-mint-deep)', marginBottom: 4, fontFamily: 'var(--font-sans)' }}>Alm — active</div>
           <div style={{ fontSize: 12, color: 'var(--lg-ink-70)', lineHeight: 1.5, fontFamily: 'var(--font-sans)' }}>
-            {OCCUPANT_CONVO[0].text}
+            Good morning, {USER_NAME}. I'm Alm — your personal AI agent for thermal comfort. I'm watching your zone and will keep your environment exactly where you need it.
           </div>
         </div>
       </div>
